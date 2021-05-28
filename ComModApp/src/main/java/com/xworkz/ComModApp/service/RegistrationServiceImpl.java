@@ -6,11 +6,13 @@ import java.time.format.DateTimeFormatter;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.xworkz.ComModApp.dto.RegistrationDTO;
 import com.xworkz.ComModApp.entity.ComModEntity;
 import com.xworkz.ComModApp.repository.ComModRepo;
+import com.xworkz.ComModApp.utility.Mailsender;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
@@ -19,10 +21,15 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	@Autowired
 	private ComModRepo repo;
+	@Autowired
+	Mailsender mailsender;
 
 	public RegistrationServiceImpl() {
 		logger = Logger.getLogger(getClass());
 	}
+	
+	@Value(value = "java.registeredBy")
+	private String registeredby;
 
 	public String validateAndSave(RegistrationDTO dto) {
 		logger.info("inside {} ");
@@ -47,6 +54,8 @@ public class RegistrationServiceImpl implements RegistrationService {
 				int affectedRows=repo.save(entity);
 				if (affectedRows > 0 ) {
 					logger.info("user successfully registered");
+					String text = "Hello"+ entity.getFullName()+ "/n your emailId Success";
+					mailsender.sendEmail(entity.getEmailId(), "Registration Successfull",text );
 					return "user successfully registered";
 				}else {
 					logger.info("user not registered");

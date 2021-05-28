@@ -30,17 +30,17 @@
 	</bean>
 	 <bean id="basicDataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://103.108.220.4:3306/commonmodule_may2021"></property>
-		<property name="username" value="xworkz"></property>
-		<property name="password" value="X-workZ@123"></property>
+		<property name="driverClassName" value="${DB.driverClassName}"></property>
+		<property name="url" value="${DB.url}"></property>
+		<property name="username" value="${DB.username}"></property>
+		<property name="password" value="${DB.password}"></property>
 	</bean>
 	
 	<bean id="mailSenderImpl" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com"></property>
-		<property name="port" value="587"></property>
-		<property name="username" value="manojkumarv@gmail.com"></property>
-		<property name="password" value="Manojgmail@321"></property>
+		<property name="host" value="${mail.host}"></property>
+		<property name="port" value="${mail.port}"></property>
+		<property name="username" value="${mail.username}"></property>
+		<property name="password" value="${mail.password}"></property>
 		
 		<property name="javaMailProperties">
 			<props>
@@ -51,5 +51,12 @@
 			</props>
 		</property>
 	</bean>
-
+<bean class = "org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id = "propertyPlaceholderConfigurer">
+<property>
+<list>
+<value>/WEB-INF/classes/account.properties</value>
+<value>/WEB-INF/classes/application.properties</value>
+</list>
+</property>
+</bean>
 </beans>
